@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using Unity.Mathematics;
 
 public class MovementScript : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class MovementScript : MonoBehaviour
     public float maxAirAccel;
     public float jumpPower;
     public float friction;
+    public AnimationCurve frictionCurve;
     public float gravity;
 
     [Space(20)]
@@ -137,14 +140,27 @@ public class MovementScript : MonoBehaviour
         return wishDir.normalized;
     }
 
-    Vector3 Friction(Vector3 vel, float frameTime)
+    Vector3 tFriction(Vector3 vel, float frameTime)
     {
         //FIX FRICTION
         Vector2 flatFriction = new Vector2(vel.x, vel.z);
 
-        flatFriction = flatFriction * Mathf.Clamp(friction,0 , 1) ;
+        float currFriction = Mathf.Clamp(friction, 0 , 1);
 
+        flatFriction = flatFriction * currFriction;
+       
         vel = new Vector3 (flatFriction.x, vel.y, flatFriction.y);
+
+        return vel;
+    }
+
+    Vector3 Friction(Vector3 vel, float frameTime)
+    {
+        float addFriction = frictionCurve.Evaluate(1 / maxGroundSpeed * vel.magnitude);
+        
+        Debug.Log(addFriction   );
+
+        vel = vel * addFriction;
 
         return vel;
     }
