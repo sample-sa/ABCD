@@ -52,6 +52,8 @@ public class MovementTest : MonoBehaviour
         float currentSpeed = rbPlayer.velocity.magnitude;
         float acceleration = Mathf.Clamp(maxSpeed - currentSpeed, 0, maxAccel);
 
+        Debug.Log(wishDir + "        " + rbPlayer.velocity + "             " + (rbPlayer.velocity.normalized - wishDir));
+
         rbPlayer.velocity +=  wishDir * acceleration;
     }
     Vector3 GetWishDir(Transform player)
