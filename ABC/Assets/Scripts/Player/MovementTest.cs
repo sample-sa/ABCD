@@ -56,6 +56,31 @@ public class MovementTest : MonoBehaviour
 
         rbPlayer.velocity +=  wishDir * acceleration;
     }
+
+    void MovementVelocity()
+    {
+        Vector3 wishDir = GetWishDir(player.transform);
+
+        currentSpeed += GetAddSpeed();
+
+        rbPlayer.velocity = currentSpeed * wishDir;
+
+    }
+
+    float GetAddSpeed()
+    {
+        float addSpeed = 0;
+
+        if(GetWishDir(player.transform).magnitude != 0)
+        {
+            addSpeed = maxSpeed - currentSpeed;
+
+            addSpeed = Mathf.Clamp(addSpeed, 0, maxAccel);
+        }
+
+        return addSpeed;
+    }
+    
     Vector3 GetWishDir(Transform player)
     {
         Vector3 wishDir = (player.forward * zMoveAxis) + (player.right * xMoveAxis);
