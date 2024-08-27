@@ -35,7 +35,8 @@ public class MovementTest : MonoBehaviour
 
     void FixedUpdate()
     {
-        ApplyVelocity();
+        //ApplyVelocity();
+        MovementVelocity();
     }
 
     void Inputs()
@@ -63,7 +64,11 @@ public class MovementTest : MonoBehaviour
 
         currentSpeed += GetAddSpeed();
 
-        rbPlayer.velocity = currentSpeed * wishDir;
+        Vector3 flatVel = currentSpeed * wishDir;
+
+        Debug.DrawRay(player.transform.position,flatVel, Color.green);
+
+        rbPlayer.velocity = new Vector3(flatVel.x, 0, flatVel.z);
 
     }
 
